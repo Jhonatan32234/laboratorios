@@ -38,3 +38,15 @@ Aunque la IA facilitó la implementación de plantillas de código y sintaxis en
 * **Celdas asistidas:** `1`, `2` y `3` (Lógica de vectores dispersos mediante diccionarios).
 * **Qué proporcionó la IA:** Plantillas lógicas para implementar el producto punto y las magnitudes vectoriales sobre diccionarios nativos de Python, omitiendo el uso de arreglos densos o matrices de NumPy.
 * **Qué se cambió/ajustó manualmente:** Se añadió una validación crítica dentro de la función `coseno` (`if norma_v1 == 0.0 or norma_v2 == 0.0: return 0.0`) para prevenir excepciones de división por cero en el caso de consultas vacías o compuestas exclusivamente por términos fuera del vocabulario. Asimismo, se diseñaron y documentaron de forma manual las consultas de prueba léxicas y polisémicas para forzar el fallo estructural del algoritmo y justificar la futura transición hacia BM25.
+
+## 5. Laboratorio 3 — BM25 y Evaluación de Búsqueda
+
+* **Celdas asistidas:** `1`, `5` y `6` (Estructura matemática de BM25, métricas desde cero y andamiaje de promedios).
+* **Qué proporcionó la IA:** Plantillas lógicas puras en Python para el cálculo acumulado de la sumatoria de BM25 y las fórmulas de descuento logarítmico para armar el `nDCG@5` e `IDCG@5` de manera nativa sin recurrir a librerías externas.
+* **Qué se cambió/ajustó manualmente:** Se estructuró a mano el mapeo y etiquetado fino del diccionario `qrels` para las 5 consultas del dominio de noticias de Chiapas, validando la coherencia semántica. Asimismo, se adaptó el bucle de evaluación genérica para asegurar que la función parseara exclusivamente listas de identificadores de strings (`['d01', 'd02', ...]`), protegiendo el pipeline contra discrepancias de tipos de datos.
+
+## 6. Laboratorio 4 — Descubrimiento de Temas con K-Means
+
+* **Celdas asistidas:** `2` y `3` (Adaptación de la lógica matricial de K-Means nativo y ordenamiento `argsort` de centroides).
+* **Qué proporcionó la IA:** Estructuras lógicas de vectorización con NumPy para segmentar las distancias del array `X[:, np.newaxis] - centroides` utilizando broadcasting eficiente, y el bucle para extraer los términos top de los centroides.
+* **Qué se cambió/ajustó manualmente:** Se definieron y asignaron de forma artesanal las etiquetas de nombres temáticos en el diccionario `nombres_tematicos` basándose en la lectura directa de las noticias de Chiapas, y se construyó el código de rastreo específico de cruce de IDs para comprobar el comportamiento de los nodos de control `d02` y `d13`.
