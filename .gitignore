@@ -1,0 +1,19 @@
+# Modelos pesados y binarios de FastText
+*.bin
+*.gz
+
+# Entornos virtuales (por si acaso no los tenías)
+.venv/
+entorno_pruebas/
+venv/
+
+# Checkpoints y resultados pesados de Transformers (Lab 6)
+**/results_ner/
+**/results_sentiment/
+**/checkpoints/
+
+# Bloquear extensiones pesadas de tensores y optimizadores por si acaso
+*.safetensors
+*.pt
+*.pth
+*.bin

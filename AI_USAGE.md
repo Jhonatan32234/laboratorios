@@ -50,3 +50,21 @@ Aunque la IA facilitó la implementación de plantillas de código y sintaxis en
 * **Celdas asistidas:** `2` y `3` (Adaptación de la lógica matricial de K-Means nativo y ordenamiento `argsort` de centroides).
 * **Qué proporcionó la IA:** Estructuras lógicas de vectorización con NumPy para segmentar las distancias del array `X[:, np.newaxis] - centroides` utilizando broadcasting eficiente, y el bucle para extraer los términos top de los centroides.
 * **Qué se cambió/ajustó manualmente:** Se definieron y asignaron de forma artesanal las etiquetas de nombres temáticos en el diccionario `nombres_tematicos` basándose en la lectura directa de las noticias de Chiapas, y se construyó el código de rastreo específico de cruce de IDs para comprobar el comportamiento de los nodos de control `d02` y `d13`.
+
+## 7. Laboratorio 5 — Embeddings y Búsqueda Semántica
+
+* **Celdas asistidas:** `2`, `4` y `6` (Lógica de instanciación del binario FastText, cálculo vectorizado de `np.mean(vectores, axis=0)` y funciones de similitud coseno con NumPy).
+* **Qué proporcionó la IA:** Estructuras nativas para invocar los métodos de FastText de `get_word_vector` y `get_analogies`, y la lógica para el control de división por cero en renglones vacíos del vectorizador de documentos.
+* **Qué se cambió/ajustó manualmente:** Se adaptaron las consultas para que encajaran directamente con las claves del diccionario `qrels` e `ids` del corpus de Chiapas consolidado en los laboratorios previos, validando el comportamiento dinámico de los resultados.
+
+
+## 8. Laboratorio 6 — Fine-tuning de BERT
+
+* **Celdas asistidas:** `2`, `3`, `7`, `11` y `12`.
+* **Qué proporcionó la IA:** - **Parte A:** La lógica de cálculo del nDCG@5 adaptada para iterar sobre los textos crudos del corpus utilizando el método `.encode()` de `sentence-transformers`, así como la instanciación de los pares positivos de entrenamiento (`InputExample`) mediante el filtrado de ganancias en `qrels`.
+  - **Parte B:** Los argumentos de entrenamiento (`TrainingArguments`) optimizados con precisión mixta (`fp16=True`) para su correcta ejecución en la GPU T4 de Google Colab, y la función de mapeo de métricas `compute_metrics_classification` utilizando `f1_score(average='macro')`.
+  - **Parte C:** El núcleo del algoritmo de alineación de subpalabras en `tokeniza_y_alinea_subpalabras`. Proporcionó el uso de `tokenized_inputs.word_ids(batch_index=i)` para identificar las fronteras de los tokens de WordPiece y asignar la máscara `-100` a las subpalabras intermedias y tokens especiales, previniendo distorsiones en la función de pérdida del modelo.
+* **Qué se cambió/ajustó manualmente:** - Se configuró el submuestreo (`.select(range(...))`) en los datasets de HuggingFace (`tweet_sentiment_multilingual` y `conll2002`) para asegurar que los tiempos de entrenamiento por época no desbordaran los límites de la sesión activa en el entorno de ejecución gratuito.
+  - Se inyectaron de forma manual las llamadas a la función `liberar_memoria()` utilizando `gc.collect()` y `torch.cuda.empty_cache()` al final de cada bloque, garantizando la estabilidad de la VRAM de la T4.
+  - Se ajustaron los pipelines de inferencia final para que extrajeran el texto directamente de nuestro diccionario indexado `crudo[...]` del corpus de Chiapas consolidado en los laboratorios previos.
+
